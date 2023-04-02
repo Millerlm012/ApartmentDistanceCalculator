@@ -1,3 +1,8 @@
+"""
+apartments.py is used for querying https://apartments.com for apartments in a specfied city, state. 
+We're then able to parse the results and calculate the distance from a specified climbing gym.
+"""
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -10,4 +15,12 @@ def query_apartments(city, state, page=1):
     return req.text
 
 def parse_apartments(html):
-    ...
+    soup = BeautifulSoup(html, 'html.parser')
+    total_pages = int(soup.find(class_='searchResults').text.split('Page')[1][1:-1].split(' of ')[1])
+
+    apt_results = soup.find_all(class_='placard-header')
+    for result in apt_results:
+        apt = {}
+        apt['name'] = result.find(class_='property-title').text
+        apt['address'] = result.find(class_='property-address').text
+        apt['url'] = result.find('a', {'class': 'property-link'}).attrs['href']
