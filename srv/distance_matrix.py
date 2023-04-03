@@ -19,5 +19,3 @@ def add_distance_to_apartments(apartments, distance_response):
     index = 0
     for entry in aparments:
         entry["dist"] = rows[0].get("elements")
-
-
