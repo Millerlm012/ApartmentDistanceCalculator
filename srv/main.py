@@ -7,9 +7,13 @@ NEEDED API's:
 """
 
 import requests
+import os
+from dotenv import load_dotenv
 from apartments import *
 from distance_matrix import *
 
+load_dotenv()
+DISTANCE_MATRIX_KEY = os.getenv('DISTANCE_MATRIX_KEY')
 
 def gather_inputs():
     city_state = input("Please enter the city and state you're wanting to find apartments in (eg. Des Moines, IA): ")
@@ -21,9 +25,11 @@ def gather_inputs():
         print("You didn't enter the city and state in the correct format. Try again.")
         gather_inputs()
 
-    return city, state
+    gym_address = input("Please enter the gym address you're wanting to calculate the apartment distance from: ")
 
-def main(city, state):
+    return city, state, gym_address
+
+def main(city, state, gym_address):
     apartments = []
     page_count = 1
     apartment_count = 0
@@ -42,9 +48,11 @@ def main(city, state):
         page_count += 1
 
     print('All apartments fetched.')
-    print(apartments)
-    print(len(apartments))
+
+    print(f'Calculating each apartments distance from specified gym address ({gym_address})...')
+    rsp = distance_matrix(apartments[:10], gym_address, DISTANCE_MATRIX_KEY)
+    print(f'Successfully used distance matrix api. \nResponse: {rsp}')
 
 if __name__ == '__main__':
-    # city, state = gather_inputs()
-    main('Des Moines', 'IA')
+    # city, state, gym_address = gather_inputs()
+    main('Des Moines', 'IA', '150 East 4th Street, Des Moines, IA 50309')

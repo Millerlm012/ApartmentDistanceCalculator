@@ -39,10 +39,7 @@ def parse_apartments(html, apartments):
         second_part_of_address = first_part_of_address.find_next_sibling(class_='property-address')
         apt['address'] = first_part_of_address.text
         if second_part_of_address != None:
-            if first_part_of_address[-1] == ' ':
-                apt['address'] += second_part_of_address.text    
-            else:
-                apt['address'] += ' ' + second_part_of_address.text
+            apt['address'] += ' ' + second_part_of_address.text
         apt['url'] = result.find('a', {'class': 'property-link'}).attrs['href']
         apartments.append(apt)
     
