@@ -11,7 +11,6 @@ def query_apartments(city, state, page=1):
 
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0'}
     url = f"https://www.apartments.com/{city.replace(' ', '-').lower()}-{state.lower()}/{page}/"
-    print(f'REQUEST URL - {url}')
     req = requests.get(url, headers=headers)
     assert req.status_code == 200, f'Failed to fetch {url}'
 
@@ -35,11 +34,7 @@ def parse_apartments(html, apartments):
     for result in wrapper_results:
         apt = {}
         apt['name'] = result.find(class_='property-title').text
-        first_part_of_address = result.find(class_='property-address')
-        second_part_of_address = first_part_of_address.find_next_sibling(class_='property-address')
-        apt['address'] = first_part_of_address.text
-        if second_part_of_address != None:
-            apt['address'] += ' ' + second_part_of_address.text
+        apt['address'] = result.find(class_='property-address')['title']
         apt['url'] = result.find('a', {'class': 'property-link'}).attrs['href']
         apartments.append(apt)
     

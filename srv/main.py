@@ -8,6 +8,8 @@ NEEDED API's:
 
 import requests
 import os
+import math
+import csv
 from dotenv import load_dotenv
 from apartments import *
 from distance_matrix import *
@@ -47,11 +49,24 @@ def main(city, state, gym_address):
         apartment_count = len(apartments)
         page_count += 1
 
-    print('All apartments fetched.')
+    print(f'All apartments fetched. (Total: {len(apartments)})')
 
     print(f'Calculating each apartments distance from specified gym address ({gym_address})...')
-    rsp = distance_matrix(apartments[:10], gym_address, DISTANCE_MATRIX_KEY)
-    print(f'Successfully used distance matrix api. \nResponse: {rsp}')
+    batches = math.floor(len(apartments) / 25) # NOTE: 25 is used because that's the max amount of origin's we can do per request
+
+    for i in range(batches+1):
+        batch_amount = 25 # NOTE: 25 is used for the same reason as above
+
+        apartments_batch = apartments[batch_amount * i: batch_amount * (i+1)]
+        apartments_batch = distance_matrix(apartments_batch, gym_address, DISTANCE_MATRIX_KEY)
+        apartments[batch_amount * i: batch_amount * (i+1)] = apartments_batch
+        print(f'Batch {i+1} of {batches+1} calculated!')
+
+    apartments_sorted = sorted(apartments, key=lambda obj: float(obj['distance'].split(' ')[0]))
+    with open('./result.csv', 'w', newline='') as f:
+        writer = csv.DictWriter(f, apartments_sorted[0].keys())
+        writer.writeheader()
+        writer.writerows(apartments_sorted)
 
 if __name__ == '__main__':
     # city, state, gym_address = gather_inputs()
