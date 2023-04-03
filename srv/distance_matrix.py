@@ -18,4 +18,6 @@ def add_distance_to_apartments(apartments, distance_response):
     rows = matrix["rows"]
     index = 0
     for entry in aparments:
-        entry["dist"] = rows[0].get("elements")
+        ## TODO: LANDON FIX, IDK if this is getting teh distance or not
+        entry["dist"] = ((rows[0]).get("elements")[0]).get("distance")
+
