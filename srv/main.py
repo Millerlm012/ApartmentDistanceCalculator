@@ -28,7 +28,7 @@ def gather_inputs():
         print("You didn't enter the city and state in the correct format. Try again.")
         gather_inputs()
 
-    # Climb Iowa: East Village address -> 'Des Moines', 'IA', '150 East 4th Street, Des Moines, IA 50309'
+    # Climb Iowa: East Village address -> '150 East 4th Street, Des Moines, IA 50309'
     destination_address = input("Please enter the gym address you're wanting to calculate the apartment distance from: ")
 
     return city, state, destination_address
@@ -53,7 +53,7 @@ def main(city, state, destination_address):
 
     print(f'All apartments fetched. (Total: {len(apartments)})')
 
-    print(f'Calculating each apartments distance from specified gym address ({destination_address})...')
+    print(f'Calculating each apartments distance from specified destination address ({destination_address})...')
     batches = math.floor(len(apartments) / 25) # NOTE: 25 is used because that's the max amount of origin's we can do per request
 
     for i in range(batches+1):
@@ -72,3 +72,4 @@ def main(city, state, destination_address):
 
 if __name__ == '__main__':
     city, state, destination_address = gather_inputs()
+    main(city, state, destination_address)
