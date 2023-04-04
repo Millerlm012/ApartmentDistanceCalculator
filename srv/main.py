@@ -1,5 +1,6 @@
 """
-The purpose of this program is to find all apartments in a specified radius of a specific climbing gym.
+The purpose of this program is to provide a csv of all apartments in a city, state, 
+and order them from least to greatest distance from a specified location.
 
 NEEDED API's:
 - Google Maps (Distance Matrix) | https://developers.google.com/maps/documentation/distance-matrix/start
