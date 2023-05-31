@@ -1,4 +1,4 @@
-# Apartment Distance Calculation
+# Apartment Distance Calculator
 
 ## About
 
